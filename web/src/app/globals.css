@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    @apply bg-slate-900 text-slate-50 antialiased selection:bg-blue-500/30;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+}
+
+/* Custom scrolling for panels */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Glassmorphism utilities */
+.glass-panel {
+  @apply bg-slate-800/80 backdrop-blur-md border border-slate-700/50 shadow-xl;
+}
