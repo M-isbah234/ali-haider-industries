@@ -43,8 +43,8 @@ export const Header: React.FC = () => {
           <Calendar size={20} />
         </button>
             <button 
-              onClick={() => router.push('/')}
-              className={`flex items-center gap-2 px-3 py-2 rounded-md font-medium text-sm transition-colors ${pathname === '/' ? 'bg-slate-800 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white'}`}
+              onClick={() => { setSelectedLoom('GLOBAL'); router.push('/'); }}
+              className={`flex items-center gap-2 px-3 py-2 rounded-md font-medium text-sm transition-colors ${pathname === '/' && selectedLoom === 'GLOBAL' ? 'bg-slate-800 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white'}`}
             >
               <Activity size={18} /> Global Dashboard
             </button>
