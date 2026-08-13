@@ -111,6 +111,31 @@ export const TelemetryProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     }
   }, []);
 
+  // UI-side jitter to simulate sub-second high-frequency real-time RPM fluctuations
+  useEffect(() => {
+    const jitterInterval = setInterval(() => {
+      setLooms(prev => {
+        const next = { ...prev };
+        let hasChanges = false;
+        
+        Object.keys(next).forEach(key => {
+          const num = parseInt(key, 10);
+          const loom = next[num];
+          if (loom.status === 'RUNNING' && loom.rpm > 0) {
+            // Jitter RPM between -3 and +3 to look highly realistic
+            const jitter = Math.floor(Math.random() * 7) - 3;
+            next[num] = { ...loom, rpm: Math.max(0, loom.rpm + jitter) };
+            hasChanges = true;
+          }
+        });
+        
+        return hasChanges ? next : prev;
+      });
+    }, 800); // 800ms feels very fast and responsive
+
+    return () => clearInterval(jitterInterval);
+  }, []);
+
   return (
     <TelemetryContext.Provider value={{ looms, ambient, solar, selectedLoom, setSelectedLoom, mockMode }}>
       {children}

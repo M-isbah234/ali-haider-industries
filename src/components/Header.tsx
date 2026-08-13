@@ -8,11 +8,17 @@ import { useRouter, usePathname } from 'next/navigation';
 export const Header: React.FC = () => {
   const { looms, selectedLoom, setSelectedLoom, mockMode } = useTelemetry();
   const [time, setTime] = useState(new Date());
+  const [airConsumption, setAirConsumption] = useState("74.4");
+  const [angle, setAngle] = useState("135.8°");
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
+    const timer = setInterval(() => {
+      setTime(new Date());
+      setAirConsumption((74.0 + Math.random() * 0.8).toFixed(1));
+      setAngle((135.0 + Math.random() * 1.5).toFixed(1) + '°');
+    }, 1000);
     return () => clearInterval(timer);
   }, []);
 
@@ -21,10 +27,13 @@ export const Header: React.FC = () => {
   
   // Dummy data for visual replication
   const articleStr = `80x80=90x74=48x2 loom no ${selectedLoom === 'GLOBAL' ? 'ALL' : selectedLoom}`;
-  const rpm = loom ? loom.rpm : 0;
-  const airConsumption = "74.4"; // Mocked static to match image
+  
+  const avgRpm = Object.values(looms).filter(l => l.status === 'RUNNING').length > 0 
+    ? Object.values(looms).filter(l => l.status === 'RUNNING').reduce((acc, l) => acc + l.rpm, 0) / Object.values(looms).filter(l => l.status === 'RUNNING').length 
+    : 0;
+  const rpm = loom ? loom.rpm : Math.round(avgRpm);
+
   const stopDuration = isStopped ? "0:02:22" : "0:00:00"; // For realism, we'd sync this with downtime ticker
-  const angle = "135.8°";
 
   return (
     <header className="flex items-center justify-between bg-[#1e293b] text-slate-100 px-4 py-2 border-b-2 border-[#1e293b] shadow-md h-14">
