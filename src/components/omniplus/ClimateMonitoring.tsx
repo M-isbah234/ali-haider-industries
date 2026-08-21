@@ -1,8 +1,9 @@
 "use client";
-import React from 'react'
+import React, { useState } from 'react'
 import { Cloud, Droplets, AlertTriangle } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import { useTelemetry } from '../../contexts/TelemetryContext'
+import toast from 'react-hot-toast'
 
 const temperatureData = [
   { time: '06:00', temp: 22 },
@@ -16,6 +17,7 @@ const temperatureData = [
 
 export const ClimateMonitoring: React.FC = () => {
   const { ambient } = useTelemetry()
+  const [coolingActive, setCoolingActive] = useState(true)
 
   const temp = ambient ? ambient.hall_temperature_celsius : 28.5
   const humidity = ambient ? ambient.hall_humidity_percentage : 65.0
@@ -115,11 +117,23 @@ export const ClimateMonitoring: React.FC = () => {
 
           {/* Control Buttons */}
           <div className="grid grid-cols-2 gap-3 mt-auto pt-2">
-            <button className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 transition-colors rounded-lg text-sm font-bold text-white shadow-sm">
-              Cooling ON
+            <button
+              onClick={() => {
+                const next = !coolingActive;
+                setCoolingActive(next);
+                toast.success(next ? 'HVAC Cooling System Activated (25°C Target)' : 'HVAC Cooling System Standby');
+              }}
+              className={`px-4 py-2.5 transition-colors rounded-lg text-sm font-bold shadow-2xs cursor-pointer ${
+                coolingActive ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-slate-200 hover:bg-slate-300 text-slate-700'
+              }`}
+            >
+              {coolingActive ? 'Cooling ON' : 'Cooling Standby'}
             </button>
-            <button className="px-4 py-2.5 bg-white hover:bg-slate-50 transition-colors rounded-lg text-sm font-bold text-slate-700 border border-slate-200 shadow-sm">
-              Settings
+            <button
+              onClick={() => toast.success('Hall Climate Setpoint: Temp Target 26.0°C | Humidity Target 65%')}
+              className="px-4 py-2.5 bg-white hover:bg-slate-50 transition-colors rounded-lg text-sm font-bold text-slate-700 border border-slate-200 shadow-2xs cursor-pointer"
+            >
+              Climate Settings
             </button>
           </div>
         </div>
