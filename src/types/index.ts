@@ -6,8 +6,7 @@ export type LoomStatusCode =
   | 'WEFT_BREAK' 
   | 'STOPPED_FILLING' 
   | 'CONE_BREAK' 
-  | 'ARTICLE_CHANGE' 
-  | 'KNOTTING' 
+  | 'SELVEDGE_BREAK' 
   | 'ELECTRICAL_ERROR' 
   | 'MECHANICAL_ERROR' 
   | 'BEAM_ERROR' 
@@ -88,6 +87,7 @@ export interface StatusConfig {
   legendText: string;
   legendBorder: string;
   isOverdue?: boolean;
+  description?: string;
 }
 
 export const ALL_STATUS_KEYS: LoomStatusCode[] = [
@@ -95,8 +95,7 @@ export const ALL_STATUS_KEYS: LoomStatusCode[] = [
   'WARP_BREAK',
   'WEFT_BREAK',
   'CONE_BREAK',
-  'ARTICLE_CHANGE',
-  'KNOTTING',
+  'SELVEDGE_BREAK',
   'ELECTRICAL_ERROR',
   'MECHANICAL_ERROR',
   'BEAM_ERROR',
@@ -172,37 +171,22 @@ export const STATUS_CONFIGS: Record<string, StatusConfig> = {
     legendText: 'text-stone-900',
     legendBorder: 'border-stone-400'
   },
-  ARTICLE_CHANGE: {
-    key: 'ARTICLE_CHANGE',
-    label: 'Article Change',
-    badgeText: 'A...',
+  SELVEDGE_BREAK: {
+    key: 'SELVEDGE_BREAK',
+    label: 'Selvedge Break',
+    badgeText: 'SELVEDGE',
     emoji: '🟦',
     bgHex: '#DBEAFE',
-    accentHex: '#3B82F6',
-    cardClass: 'bg-[#DBEAFE] hover:bg-blue-200/80 border-blue-300 text-blue-950',
-    borderLeft: 'border-l-[#3B82F6]',
-    dotClass: 'bg-[#3B82F6]',
-    textClass: 'text-blue-900 font-extrabold',
-    badgeClass: 'bg-blue-200/90 text-blue-900 border-blue-400 font-bold',
+    accentHex: '#1E3A8A',
+    cardClass: 'bg-[#DBEAFE] hover:bg-blue-200/80 border-[#1E3A8A]/30 text-blue-950',
+    borderLeft: 'border-l-[#1E3A8A]',
+    dotClass: 'bg-[#1E3A8A] animate-pulse',
+    textClass: 'text-[#1E3A8A] font-extrabold',
+    badgeClass: 'bg-blue-100/90 text-[#1E3A8A] border-[#1E3A8A]/40 font-bold',
     legendBg: 'bg-[#DBEAFE]',
-    legendText: 'text-blue-900',
-    legendBorder: 'border-blue-400'
-  },
-  KNOTTING: {
-    key: 'KNOTTING',
-    label: 'Knotting',
-    badgeText: 'KNOT',
-    emoji: '🩷',
-    bgHex: '#FCE7F3',
-    accentHex: '#EC4899',
-    cardClass: 'bg-[#FCE7F3] hover:bg-pink-200/80 border-pink-300 text-pink-950',
-    borderLeft: 'border-l-[#EC4899]',
-    dotClass: 'bg-[#EC4899]',
-    textClass: 'text-pink-900 font-extrabold',
-    badgeClass: 'bg-pink-200/90 text-pink-900 border-pink-400 font-bold',
-    legendBg: 'bg-[#FCE7F3]',
-    legendText: 'text-pink-900',
-    legendBorder: 'border-pink-400'
+    legendText: 'text-[#1E3A8A]',
+    legendBorder: 'border-[#1E3A8A]/40',
+    description: 'Triggered if ELSY (Electronic Selvedge System) or waste cutter fails, or if binding yarn breaks.'
   },
   ELECTRICAL_ERROR: {
     key: 'ELECTRICAL_ERROR',
@@ -287,18 +271,18 @@ export const STATUS_CONFIGS: Record<string, StatusConfig> = {
   LOW_AIR_PRESSURE: {
     key: 'LOW_AIR_PRESSURE',
     label: 'Low Air Pressure',
-    badgeText: 'AIR',
-    emoji: '🟩',
-    bgHex: '#CCFBF1',
-    accentHex: '#0D9488',
-    cardClass: 'bg-[#CCFBF1] hover:bg-teal-200/80 border-teal-300 text-teal-950',
-    borderLeft: 'border-l-[#0D9488]',
-    dotClass: 'bg-[#0D9488] animate-pulse',
-    textClass: 'text-teal-900 font-extrabold',
-    badgeClass: 'bg-teal-200/90 text-teal-900 border-teal-400 font-bold',
-    legendBg: 'bg-[#CCFBF1]',
-    legendText: 'text-teal-900',
-    legendBorder: 'border-teal-400'
+    badgeText: 'LAP',
+    emoji: '🩷',
+    bgHex: '#FCE7F3',
+    accentHex: '#EC4899',
+    cardClass: 'bg-[#FCE7F3] hover:bg-pink-200/80 border-pink-300 text-pink-950',
+    borderLeft: 'border-l-[#EC4899]',
+    dotClass: 'bg-[#EC4899] animate-pulse',
+    textClass: 'text-pink-900 font-extrabold',
+    badgeClass: 'bg-pink-200/90 text-pink-900 border-pink-400 font-bold',
+    legendBg: 'bg-[#FCE7F3]',
+    legendText: 'text-pink-900',
+    legendBorder: 'border-pink-400'
   },
   OIL_CHANGE_DUE: {
     key: 'OIL_CHANGE_DUE',
@@ -349,11 +333,8 @@ export const getLoomStatusConfig = (statusRaw?: string): StatusConfig => {
   if (status === 'CONE_BREAK') {
     return STATUS_CONFIGS.CONE_BREAK;
   }
-  if (status === 'ARTICLE_CHANGE' || status.startsWith('STYLE')) {
-    return STATUS_CONFIGS.ARTICLE_CHANGE;
-  }
-  if (status === 'KNOTTING') {
-    return STATUS_CONFIGS.KNOTTING;
+  if (status === 'SELVEDGE_BREAK') {
+    return STATUS_CONFIGS.SELVEDGE_BREAK;
   }
   if (status === 'ELECTRICAL_ERROR') {
     return STATUS_CONFIGS.ELECTRICAL_ERROR;

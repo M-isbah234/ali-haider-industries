@@ -14,8 +14,8 @@ const generateInitial36Looms = (): Record<number, LoomState> => {
     'WARP_BREAK',        // Loom 2
     'WEFT_BREAK',        // Loom 3
     'CONE_BREAK',        // Loom 4
-    'ARTICLE_CHANGE',    // Loom 5
-    'KNOTTING',          // Loom 6
+    'SELVEDGE_BREAK',    // Loom 5
+    'SELVEDGE_BREAK',    // Loom 6
     'ELECTRICAL_ERROR',  // Loom 7
     'MECHANICAL_ERROR',  // Loom 8
     'BEAM_ERROR',        // Loom 9
@@ -29,7 +29,7 @@ const generateInitial36Looms = (): Record<number, LoomState> => {
     'WEFT_BREAK',        // Loom 17
     'RUNNING',           // Loom 18
     'RUNNING',           // Loom 19
-    'ARTICLE_CHANGE',    // Loom 20
+    'SELVEDGE_BREAK',    // Loom 20
     'RUNNING',           // Loom 21
     'LOW_AIR_PRESSURE',  // Loom 22
     'RUNNING',           // Loom 23

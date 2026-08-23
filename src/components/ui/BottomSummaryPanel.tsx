@@ -78,7 +78,7 @@ export const BottomSummaryPanel: React.FC<BottomSummaryPanelProps> = ({
                 isSelected ? 'ring-2 ring-blue-600 ring-offset-1 scale-105 font-bold' : 'hover:scale-102 opacity-95 hover:opacity-100'
               } ${cfg.cardClass}`}
             >
-              {/* Solid color chip instead of emoji for KNOTTING, plain color dot for others */}
+              {/* Solid color chip instead of emoji for SELVEDGE_BREAK, plain color dot for others */}
               <span
                 className="inline-block w-2.5 h-2.5 rounded-sm shrink-0"
                 style={{ backgroundColor: cfg.accentHex }}

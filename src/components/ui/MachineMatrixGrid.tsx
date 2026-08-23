@@ -68,21 +68,27 @@ export const MachineMatrixGrid: React.FC<MachineMatrixGridProps> = ({
             onClick={() => onSelectLoom(loom.loom_number)}
             style={{
               backgroundColor: config.bgHex,
-              borderLeftColor: config.accentHex,
+              borderLeftColor: oil.state === 'OVERDUE' ? '#EF4444' : config.accentHex,
+              border: oil.state === 'OVERDUE' ? '2px solid #EF4444' : undefined,
+              boxSizing: 'border-box',
             }}
-            className={`text-left p-2.5 sm:p-3 pb-3 sm:pb-4 rounded-xl border-l-4 border-t border-r border-b shadow-2xs transition-all duration-150 cursor-pointer flex flex-col justify-between h-full relative group hover:shadow-md hover:-translate-y-0.5 ${
+            className={`text-left rounded-xl shadow-2xs transition-all duration-150 cursor-pointer flex flex-col justify-between h-full relative group hover:shadow-md hover:-translate-y-0.5 ${
+              oil.state === 'OVERDUE' 
+                ? 'p-2 sm:p-2.5 pb-2 sm:pb-3 border-none' 
+                : 'p-2.5 sm:p-3 pb-3 sm:pb-4 border-l-4 border-t border-r border-b border-l-transparent'
+            } ${
               config.cardClass
-            } ${config.borderLeft} ${
+            } ${oil.state === 'OVERDUE' ? '' : config.borderLeft} ${
               !matchesFilter ? 'opacity-25 grayscale-40 scale-98' : 'opacity-100 scale-100 ring-1 ring-black/5'
             }`}
           >
             {/* Top Row: Loom ID Heading + Model Tag directly next to it & Status Badge */}
-            <div className="flex justify-between items-center w-full gap-1 leading-none">
-              <div className="flex items-center gap-1.5 flex-wrap min-w-0">
-                <span className="font-extrabold text-xs sm:text-sm tracking-tight text-slate-900 leading-none">
+            <div className="flex justify-between items-center w-full gap-1 leading-none min-w-0">
+              <div className="flex items-center gap-1 sm:gap-1.5 flex-nowrap min-w-0 overflow-hidden shrink">
+                <span className="font-extrabold text-xs sm:text-sm tracking-tight text-slate-900 leading-none whitespace-nowrap shrink-0">
                   Loom {loom.loom_number < 10 ? `0${loom.loom_number}` : loom.loom_number}
                 </span>
-                <span className="text-[8.5px] sm:text-[9.5px] font-black uppercase px-1 py-0.3 rounded bg-black/10 text-slate-800 shrink-0">
+                <span className="text-[8.5px] sm:text-[9.5px] font-black uppercase px-1 py-0.3 rounded bg-black/10 text-slate-800 shrink-0 whitespace-nowrap">
                   {model}
                 </span>
                 {oil.state === 'OVERDUE' && (
@@ -94,11 +100,18 @@ export const MachineMatrixGrid: React.FC<MachineMatrixGridProps> = ({
 
               {/* Status Badge */}
               <div className="flex items-center gap-1 shrink-0">
-                <span className={`w-2 h-2 rounded-full ${config.dotClass}`} />
+                <span className={`w-1.5 h-1.5 rounded-full ${config.dotClass}`} />
                 <span
                   className={`text-[8px] sm:text-[9.5px] font-black uppercase px-1 py-0.3 rounded border shadow-2xs ${config.badgeClass}`}
                 >
-                  {config.badgeText}
+                  {config.key === 'OIL_CHANGE_OVERDUE' ? (
+                    <span className="flex flex-col items-center leading-[1.0] text-center">
+                      <span>OIL</span>
+                      <span>OVERDUE</span>
+                    </span>
+                  ) : (
+                    config.badgeText
+                  )}
                 </span>
               </div>
             </div>
@@ -114,7 +127,7 @@ export const MachineMatrixGrid: React.FC<MachineMatrixGridProps> = ({
             </div>
 
             {/* Bottom Row: RPM & Status Label — always visible */}
-            <div className="flex justify-between items-center w-full pt-1.5 border-t border-black/10 mt-auto">
+            <div className="flex justify-between items-center w-full pt-1.5 border-t border-black/10 mt-auto min-w-0 gap-1">
               <div className="flex items-baseline gap-0.5 shrink-0">
                 <span className="text-xs sm:text-sm font-mono font-black text-slate-950 leading-none">
                   {loom.rpm}
@@ -124,7 +137,7 @@ export const MachineMatrixGrid: React.FC<MachineMatrixGridProps> = ({
                 </span>
               </div>
 
-              <span className={`text-[9px] sm:text-[10px] font-black uppercase tracking-wider truncate ml-1 ${config.textClass}`}>
+              <span className={`text-[9px] sm:text-[10px] font-black uppercase tracking-wider truncate min-w-0 shrink text-right ${config.textClass}`}>
                 {config.label}
               </span>
             </div>

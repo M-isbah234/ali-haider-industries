@@ -5,9 +5,11 @@ import { MachineMatrixGrid } from '../components/ui/MachineMatrixGrid';
 import { LineSummaries } from '../components/ui/LineSummaries';
 import { BottomSummaryPanel } from '../components/ui/BottomSummaryPanel';
 import { getEffectiveLoomStatusConfig } from '../types';
+import { useRouter } from 'next/navigation';
 
 export const GlobalDashboard: React.FC = () => {
   const { looms, setSelectedLoom } = useTelemetry();
+  const router = useRouter();
 
   // State for active status filter
   const [activeFilterStatus, setActiveFilterStatus] = useState<string | null>(null);
@@ -15,6 +17,7 @@ export const GlobalDashboard: React.FC = () => {
   // Card click → go directly to Full Machine View
   const handleCardClick = (loomNumber: number) => {
     setSelectedLoom(loomNumber);
+    router.push(`/?loom=${loomNumber}`);
   };
 
   return (

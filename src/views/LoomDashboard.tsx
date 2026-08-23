@@ -6,11 +6,13 @@ import { SensorDashboard } from '../components/omniplus/SensorDashboard';
 import { ClimateMonitoring } from '../components/omniplus/ClimateMonitoring';
 import { ActionCenter } from '../components/omniplus/ActionCenter';
 import { getLoomModel, getOilStatus, getEffectiveLoomStatusConfig } from '../types';
+import { useRouter } from 'next/navigation';
 
 type Tab = 'sensors' | 'climate' | 'logs' | 'oil';
 
 export const LoomDashboard: React.FC = () => {
   const { looms, selectedLoom, setSelectedLoom, updateLoomOilSettings, resetOilChange } = useTelemetry();
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<Tab>('sensors');
 
   const loom = typeof selectedLoom === 'number' ? looms[selectedLoom] : null;
@@ -67,7 +69,10 @@ export const LoomDashboard: React.FC = () => {
       <div className="flex items-center justify-between px-3 py-2 border-b border-slate-300 bg-white shadow-xs flex-wrap gap-2">
         <div className="flex items-center gap-2 flex-wrap">
           <button
-            onClick={() => setSelectedLoom('GLOBAL')}
+            onClick={() => {
+              setSelectedLoom('GLOBAL');
+              router.push('/');
+            }}
             className="flex items-center gap-1.5 px-3 py-2 rounded-lg font-extrabold text-xs bg-slate-800 text-white hover:bg-slate-900 shadow-2xs transition-colors cursor-pointer mr-2"
           >
             <ArrowLeft size={16} /> Factory Floor Overview
